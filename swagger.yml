@@ -1,0 +1,77 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server for Coffee Points."
+  version: "1.0.0"
+  title: "CoffeePoints"
+host: "localhost:3000"
+basePath: "/"
+schemes:
+- "http"
+- "https"
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /coffee_points:
+    get:
+      tags:
+      - "Coffee Point"
+      description: "Gets a list of coffee points grouped by post code"
+      parameters:
+      - in: "query"
+        name: "latitude"
+        description: "Latitude value"
+        type: string
+        required: true
+      - in: "query"
+        name: "longitude"
+        description: "Longitude value"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "200 OK"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          schema:
+            type: "object"
+            properties:
+              coffee_points:
+                type: "array"
+                items:
+                  type: object
+                  properties:
+                    postcode:
+                      type: "string"
+                      example: "10765"
+                    coffee_shops:
+                      type: "array"
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: "My coffee shop"
+        400:
+          description: "Bad Request"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Unprocessable Entity"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Error:
+    type: "object"
+    properties:
+      errors:
+        items:
+          type: string
