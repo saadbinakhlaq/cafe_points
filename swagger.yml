@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server for Coffee Points."
+  description: "This is a sample server for Cafe Points."
   version: "1.0.0"
-  title: "CoffeePoints"
+  title: "CafePoints"
 host: "localhost:3000"
 basePath: "/"
 schemes:

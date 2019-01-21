@@ -4,11 +4,12 @@ class MapboxAPI
   LIMIT = 20
 
   class ApiValidationError < StandardError;end
+  class ApiAuthenticationError < StandardError;end
 
   def initialize(latitude:, longitude:)
     @latitude  = latitude
     @longitude = longitude
-    Mapbox.access_token = Rails.application.secrets.mapbox_api_key
+    init_client
   end
 
   def coffee_shops_data
@@ -23,6 +24,9 @@ class MapboxAPI
         limit: LIMIT
       }
     )
+
+  rescue Mapbox::AuthenticationError => error
+    raise ApiAuthenticationError.new('Mapbox APIKEY not provided')
   end
 
   private
@@ -49,5 +53,9 @@ class MapboxAPI
     end
   rescue ArgumentError
     raise ApiValidationError.new("longitude: #{@longitude} is not a valid")
+  end
+
+  def init_client
+    Mapbox.access_token = Rails.application.secrets.mapbox_api_key
   end
 end
